@@ -8,13 +8,13 @@ public class PanelDraw extends JPanel {
     private FigureManagement figures = new FigureManagement();
     private InFigure currentFigure = new InFigure();
     private boolean moving = false;
-    int oldX;
-    int oldY;
+    private int oldX;
+    private int oldY;
 
-    public PanelDraw(){
+    //Sets size and creates mouseListener
+    PanelDraw(){
         setMinimumSize(new Dimension(500,500));
         setPreferredSize(new Dimension(500,500));
-
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 formMouseDragged(evt);
@@ -30,6 +30,7 @@ public class PanelDraw extends JPanel {
         });
     }
 
+    //draws all figure
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         if(currentFigure.getFigure() != null){
@@ -41,6 +42,7 @@ public class PanelDraw extends JPanel {
 
     private void formMouseDragged(java.awt.event.MouseEvent evt) {
         if(moving){
+            //old figure is being moved
             if(currentFigure.getPoint() != null){
                 currentFigure.getPoint().move(evt.getX(), evt.getY(), oldX, oldY);
                 currentFigure.getFigure().setP3();
@@ -50,6 +52,7 @@ public class PanelDraw extends JPanel {
             oldX = evt.getX();
             oldY = evt.getY();
         }else{
+            //new figure is moved
             currentFigure.getFigure().setP2(evt.getX(), evt.getY());
         }
         repaint();
@@ -58,16 +61,20 @@ public class PanelDraw extends JPanel {
     private void formMousePressed(java.awt.event.MouseEvent evt){
         currentFigure = figures.inFigure(evt.getX(), evt.getY());
         if(currentFigure != null){
+            //old figure will be moved
             moving = true;
             oldX = evt.getX();
             oldY = evt.getY();
         }else{
+            //a new figure is created
             moving = false;
             currentFigure = new InFigure();
+            //1 = line
+            //2 = circle
+            //3 = rectangle
             switch (Main.selectedFigure){
                 case 1:
                     currentFigure.setFigure(new Line(evt.getX(), evt.getY()));
-                    System.out.println("new Line");
                     break;
                 case 2:
                     currentFigure.setFigure(new Circle(evt.getX(), evt.getY()));
@@ -83,14 +90,12 @@ public class PanelDraw extends JPanel {
     }
 
     private void formMouseReleased(java.awt.event.MouseEvent evt){
+        currentFigure.getFigure().rearrange();
         if(!moving){
-            currentFigure.getFigure().rearrange();
+            //new figure is added to figure-list
             figures.add(currentFigure.getFigure());
             moving = false;
-        }else{
-
         }
-
         repaint();
     }
 

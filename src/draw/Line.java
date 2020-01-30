@@ -1,7 +1,6 @@
 package draw;
 
 import java.awt.*;
-import java.util.logging.Logger;
 
 public class Line extends Figure {
 
@@ -61,12 +60,8 @@ public class Line extends Figure {
 
     }
 
-    //For logging
-    @Override
-    public void print(Logger logger){
-        logger.info("Line");
-        super.print(logger);
-    }
+
+
 
 
 }

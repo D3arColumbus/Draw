@@ -1,9 +1,6 @@
 package draw;
 
-import javafx.scene.control.RadioButton;
-
 import javax.swing.*;
-import java.awt.*;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
